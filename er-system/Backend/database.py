@@ -12,12 +12,14 @@ def get_all_hospitals():
         hospitals.append(data)
     return hospitals
 
-def update_hospital_beds(hospital_id: str, change: int):
+def update_hospital_beds(hospital_id: str, ward_type: str = "general", change: int = -1):
     ref = db.collection("hospitals").document(hospital_id)
     doc = ref.get()
     if doc.exists:
-        current = doc.to_dict().get("available_beds", 0)
-        ref.update({"available_beds": current + change})
+        data = doc.to_dict()
+        current = data.get("wards", {}).get(ward_type, {}).get("available", 0)
+        new_value = max(0, current + change)
+        ref.update({f"wards.{ward_type}.available": new_value})
 
 def log_assignment(patient: dict, result: dict):
     db.collection("assignments").add({

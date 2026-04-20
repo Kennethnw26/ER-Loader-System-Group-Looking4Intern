@@ -16,12 +16,20 @@ model = GenerativeModel("gemini-1.5-flash")
 def build_prompt(patient: dict, hospitals: list) -> str:
     hospital_list = ""
     for i, h in enumerate(hospitals, 1):
+        wards = h.get('wards', {})
+        general_beds = wards.get('general', {}).get('available', 0)
+        icu_beds = wards.get('icu', {}).get('available', 0)
+        total_available = general_beds + icu_beds
+
         hospital_list += f"""
-{i}. {h['name']}
-   - Available beds: {h['available_beds']}
+{i}. {h['name']} ({h.get('short_name', '')})
+   - General beds available: {general_beds}
+   - ICU beds available: {icu_beds}
+   - Total available: {total_available}
    - Wait time: {h['wait_time']} mins
    - Specialties: {', '.join(h.get('specialties', []))}
    - Location: {h['location']}
+   - Address: {h.get('address', 'N/A')}
    - Hospital ID: {h['id']}
 """
 
@@ -66,7 +74,6 @@ def get_routing_decision(patient: dict, hospitals: list) -> dict:
     
     # Clean response and parse JSON
     text = response.text.strip()
-    # Remove markdown code blocks if present
     if text.startswith("```"):
         text = text.split("```")[1]
         if text.startswith("json"):
