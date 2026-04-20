@@ -134,6 +134,18 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Google Cloud service account keys
+key.json
+*.json
+serviceAccount*.json
+
+# Docker
+.dockerignore
+
+# OS
+.DS_Store
+Thumbs.db
+
 # Environments
 .env
 .envrc
