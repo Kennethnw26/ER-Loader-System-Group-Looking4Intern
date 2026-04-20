@@ -1179,10 +1179,10 @@
                 <span class="section-badge">Gemini 1.5 Flash</span>
             </div>
 
-            <div class="api-config">
+            <div class="api-config" style="display:none;">
                 <span>🔑</span>
                 <span style="white-space:nowrap;font-family:var(--mono);font-size:11px;">Backend URL:</span>
-                <input type="text" id="apiBaseUrl" value="http://localhost:8000"
+                <input type="text" id="apiBaseUrl" value="https://er-load-balancer-175772493560.asia-southeast1.run.app"
                     placeholder="https://your-cloudrun-url.run.app" />
             </div>
 
@@ -1380,7 +1380,7 @@
             fail.style.display = 'none';
 
             try {
-                const base = document.getElementById('apiBaseUrl').value || 'http://localhost:8000';
+                const base = document.getElementById('apiBaseUrl').value || 'https://er-load-balancer-175772493560.asia-southeast1.run.app';
                 const res = await fetch(`${base}/hospitals`, { signal: AbortSignal.timeout(5000) });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
@@ -1550,7 +1550,7 @@
             };
 
             try {
-                const base = document.getElementById('apiBaseUrl').value || 'http://localhost:8000';
+                const base = document.getElementById('apiBaseUrl').value || 'https://er-load-balancer-175772493560.asia-southeast1.run.app';
                 const res = await fetch(`${base}/assign`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
