@@ -1,6 +1,6 @@
 from google.cloud import firestore
 
-db = firestore.Client()
+db = firestore.Client(database="er-database")
 
 def get_all_hospitals():
     hospitals_ref = db.collection("hospitals")

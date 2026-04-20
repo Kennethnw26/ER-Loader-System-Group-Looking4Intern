@@ -1,6 +1,9 @@
 from google.cloud import firestore
 
-db = firestore.Client(project="er-routing-system")
+db = firestore.Client(
+    project="hakcaton-group-looking4intern",
+    database="er-database"
+)
 
 hospitals = [
     {
