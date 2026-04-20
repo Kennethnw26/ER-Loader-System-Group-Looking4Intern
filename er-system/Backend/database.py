@@ -1,15 +1,106 @@
-from google.cloud import firestore
+import os
+import asyncio
+from typing import Optional
+import logging
 
-db = firestore.Client()
+logger = logging.getLogger(__name__)
 
-def get_hospitals():
-    hospitals_ref = db.collection("hospitals")
-    docs = hospitals_ref.stream()
+# Lazy import to avoid startup crash if credentials not set
+_db = None
 
-    hospitals = []
-    for doc in docs:
-        data = doc.to_dict()
-        data["id"] = doc.id
-        hospitals.append(data)
+def get_db():
+    global _db
+    if _db is None:
+        try:
+            from google.cloud import firestore
+            project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "your-project-id")
+            _db = firestore.Client(project=project_id, database="er-database")
+            logger.info(f"Firestore connected to project: {project_id}")
+        except Exception as e:
+            logger.error(f"Firestore connection failed: {e}")
+            raise
+    return _db
 
-    return hospitals
+async def get_hospitals():
+    """Fetch all hospitals from Firestore"""
+    try:
+        db = get_db()
+        loop = asyncio.get_event_loop()
+        
+        def _fetch():
+            hospitals = []
+            docs = db.collection("hospitals").stream()
+            for doc in docs:
+                data = doc.to_dict()
+                data["id"] = doc.id
+                hospitals.append(data)
+            return hospitals
+        
+        hospitals = await loop.run_in_executor(None, _fetch)
+        logger.info(f"Fetched {len(hospitals)} hospitals")
+        return hospitals
+    except Exception as e:
+        logger.error(f"get_hospitals error: {e}")
+        raise
+
+async def get_hospital_by_id(hospital_id: str):
+    """Fetch a single hospital by ID"""
+    try:
+        db = get_db()
+        loop = asyncio.get_event_loop()
+        
+        def _fetch():
+            doc = db.collection("hospitals").document(hospital_id).get()
+            if doc.exists:
+                data = doc.to_dict()
+                data["id"] = doc.id
+                return data
+            return None
+        
+        return await loop.run_in_executor(None, _fetch)
+    except Exception as e:
+        logger.error(f"get_hospital_by_id error: {e}")
+        raise
+
+async def update_hospital_beds(hospital_id: str, ward_type: str, action: str = "admit"):
+    """
+    Update bed count when patient is admitted or discharged.
+    ward_type: icu | premium | regular | general
+    action: admit | discharge
+    """
+    try:
+        db = get_db()
+        loop = asyncio.get_event_loop()
+        
+        def _update():
+            ref = db.collection("hospitals").document(hospital_id)
+            doc = ref.get()
+            if not doc.exists:
+                return None
+            
+            data = doc.to_dict()
+            wards = data.get("wards", {})
+            ward = wards.get(ward_type, {})
+            
+            available = ward.get("available", 0)
+            total = ward.get("total", 0)
+            
+            if action == "admit":
+                if available <= 0:
+                    return None  # No beds available
+                ward["available"] = available - 1
+            elif action == "discharge":
+                if available < total:
+                    ward["available"] = available + 1
+            
+            wards[ward_type] = ward
+            ref.update({"wards": wards})
+            
+            updated_data = ref.get().to_dict()
+            updated_data["id"] = hospital_id
+            return updated_data
+        
+        return await loop.run_in_executor(None, _update)
+    except Exception as e:
+        logger.error(f"update_hospital_beds error: {e}")
+        raise
