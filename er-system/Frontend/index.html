@@ -4,380 +4,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ER Load Balancer — MyAI Future Hackathon</title>
+    <title>ER LoadBalancer — MyAI Future Hackathon</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <style>
-        :root {
-            --bg: #050a0f;
-            --bg2: #0a1520;
-            --bg3: #0f1f30;
-            --card: #0d1a26;
-            --border: rgba(0, 200, 255, 0.12);
-            --border2: rgba(0, 200, 255, 0.25);
-            --cyan: #00c8ff;
-            --cyan2: #0090b8;
-            --green: #00e5a0;
-            --amber: #ffb830;
-            --red: #ff4d6a;
-            --text: #e2f0ff;
-            --text2: #7da8c8;
-            --text3: #3d6880;
-            --font: 'Space Grotesk', sans-serif;
-            --mono: 'JetBrains Mono', monospace;
-        }
-
-        * {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         html {
-            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        :root {
+            --white: #ffffff;
+            --off-white: #f7f7f5;
+            --light: #efefed;
+            --mid: #d4d4d0;
+            --muted: #9a9a94;
+            --dark: #2a2a26;
+            --black: #111110;
+            --green: #1a6b3c;
+            --green-light: #e8f4ed;
+            --green-mid: #2d8f55;
+            --amber: #b45309;
+            --amber-light: #fef3c7;
+            --red: #b91c1c;
+            --red-light: #fee2e2;
+            --blue: #1d4ed8;
+            --blue-light: #eff6ff;
+            --serif: 'Instrument Serif', Georgia, serif;
+            --sans: 'DM Sans', sans-serif;
+            --mono: 'DM Mono', monospace;
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font);
+            font-family: var(--sans);
+            background: var(--off-white);
+            color: var(--black);
             min-height: 100vh;
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Grid background */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(0, 200, 255, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 200, 255, 0.04) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* ─── HEADER ─── */
+        /* ── HEADER ── */
         header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(5, 10, 15, 0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            height: 64px;
+            background: var(--white);
+            border-bottom: 1px solid var(--light);
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 2rem;
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: 0.02em;
+            font-family: var(--sans);
+            font-weight: 500;
+            font-size: 15px;
+            color: var(--black);
+            letter-spacing: -0.01em;
         }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--cyan);
-            border-radius: 8px;
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--green);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
         }
 
-        .logo span {
-            color: var(--cyan);
+        .logo-sep {
+            color: var(--mid);
+            margin: 0 2px;
         }
 
-        .badge {
+        .gemini-pill {
             font-family: var(--mono);
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border2);
-            color: var(--cyan);
-            letter-spacing: 0.05em;
+            font-size: 10px;
+            letter-spacing: 0.04em;
+            padding: 2px 8px;
+            border-radius: 3px;
+            background: var(--green-light);
+            color: var(--green);
+            border: 1px solid #c6e6d2;
         }
 
         nav {
             display: flex;
-            gap: 8px;
+            gap: 2px;
         }
 
         nav button {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text2);
-            padding: 6px 16px;
+            background: none;
+            border: none;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-family: var(--font);
+            font-family: var(--sans);
             font-size: 13px;
+            font-weight: 400;
+            color: var(--muted);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
         }
 
-        nav button:hover,
+        nav button:hover {
+            background: var(--off-white);
+            color: var(--dark);
+        }
+
         nav button.active {
-            background: rgba(0, 200, 255, 0.1);
-            border-color: var(--cyan);
-            color: var(--cyan);
+            background: var(--off-white);
+            color: var(--black);
+            font-weight: 500;
         }
 
-        /* ─── MAIN LAYOUT ─── */
+        /* ── MAIN ── */
         main {
-            position: relative;
-            z-index: 1;
-            max-width: 1280px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 3rem 2rem 4rem;
         }
 
-        /* ─── HERO ─── */
+        /* ── HERO ── */
         .hero {
-            text-align: center;
-            padding: 3rem 0 2rem;
+            margin-bottom: 3rem;
         }
 
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+        .hero-eyebrow {
             font-family: var(--mono);
-            font-size: 12px;
-            color: var(--cyan);
-            border: 1px solid var(--border2);
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-bottom: 1.5rem;
-            background: rgba(0, 200, 255, 0.05);
-        }
-
-        .hero-tag::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--green);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1)
-            }
-
-            50% {
-                opacity: 0.5;
-                transform: scale(0.8)
-            }
-        }
-
-        h1 {
-            font-size: clamp(2rem, 4vw, 3.2rem);
-            font-weight: 700;
-            line-height: 1.15;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
             margin-bottom: 1rem;
-            letter-spacing: -0.02em;
         }
 
-        h1 em {
-            color: var(--cyan);
-            font-style: normal;
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(2.2rem, 4vw, 3.4rem);
+            font-weight: 400;
+            line-height: 1.15;
+            color: var(--black);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--green);
         }
 
         .hero-sub {
-            color: var(--text2);
-            font-size: 1.1rem;
-            max-width: 560px;
-            margin: 0 auto 2rem;
+            font-size: 15px;
+            color: var(--muted);
+            font-weight: 300;
+            max-width: 480px;
             line-height: 1.6;
         }
 
-        /* ─── STATS ROW ─── */
+        /* ── STATS ── */
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
+            gap: 1px;
+            background: var(--light);
+            border: 1px solid var(--light);
+            border-radius: 10px;
+            overflow: hidden;
             margin-bottom: 2.5rem;
         }
 
-        .stat-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            text-align: center;
-            transition: border-color 0.3s;
+        .stat {
+            background: var(--white);
+            padding: 1.25rem 1.5rem;
+            transition: background 0.15s;
         }
 
-        .stat-card:hover {
-            border-color: var(--border2);
+        .stat:hover {
+            background: var(--off-white);
         }
 
         .stat-num {
-            font-size: 2rem;
-            font-weight: 700;
             font-family: var(--mono);
-            color: var(--cyan);
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: var(--black);
             line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-num.green {
+            color: var(--green);
         }
 
         .stat-label {
-            font-size: 12px;
-            color: var(--text3);
-            margin-top: 4px;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
 
-        /* ─── SECTION HEADERS ─── */
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--light);
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .tab-btn:hover {
+            color: var(--dark);
+        }
+
+        .tab-btn.active {
+            color: var(--black);
+            font-weight: 500;
+            border-bottom-color: var(--green);
+        }
+
+        /* ── SECTION HEADER ── */
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
         }
 
         .section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--dark);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
-        .section-title::before {
-            content: '';
-            width: 3px;
-            height: 20px;
-            background: var(--cyan);
-            border-radius: 2px;
-        }
-
-        .section-badge {
+        .section-meta {
             font-family: var(--mono);
             font-size: 11px;
-            background: rgba(0, 200, 255, 0.1);
-            color: var(--cyan);
-            padding: 3px 10px;
-            border-radius: 4px;
-            border: 1px solid var(--border2);
+            color: var(--muted);
         }
 
-        /* ─── HOSPITALS GRID ─── */
+        /* ── HOSPITAL GRID ── */
         .hospitals-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1px;
+            background: var(--light);
+            border: 1px solid var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
         }
 
         .hospital-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            background: var(--white);
             padding: 1.5rem;
             cursor: pointer;
-            transition: all 0.25s;
+            transition: background 0.15s;
             position: relative;
-            overflow: hidden;
-        }
-
-        .hospital-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-color), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
         }
 
         .hospital-card:hover {
-            border-color: var(--border2);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-
-        .hospital-card:hover::before {
-            opacity: 1;
+            background: var(--off-white);
         }
 
         .hospital-card.selected {
-            border-color: var(--cyan);
-            box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.3), 0 8px 32px rgba(0, 0, 0, 0.5);
+            background: var(--green-light);
         }
 
         .hospital-card.selected::before {
-            opacity: 1;
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--green);
         }
 
-        .hosp-header {
+        .hosp-top {
             display: flex;
-            align-items: flex-start;
             justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 1rem;
         }
 
         .hosp-name {
-            font-size: 1rem;
-            font-weight: 600;
-            line-height: 1.3;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--black);
+            line-height: 1.4;
             flex: 1;
+            padding-right: 8px;
         }
 
-        .hosp-short {
-            font-family: var(--mono);
-            font-size: 12px;
-            color: var(--text3);
+        .hosp-loc {
+            font-size: 11px;
+            color: var(--muted);
             margin-top: 2px;
         }
 
-        .hosp-status {
+        .status-dot {
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 12px;
+            font-size: 11px;
             font-family: var(--mono);
-            padding: 3px 10px;
-            border-radius: 20px;
             white-space: nowrap;
-            flex-shrink: 0;
+            padding: 3px 8px;
+            border-radius: 20px;
         }
 
-        .hosp-status.good {
-            background: rgba(0, 229, 160, 0.1);
-            color: var(--green);
-            border: 1px solid rgba(0, 229, 160, 0.2);
-        }
-
-        .hosp-status.warn {
-            background: rgba(255, 184, 48, 0.1);
-            color: var(--amber);
-            border: 1px solid rgba(255, 184, 48, 0.2);
-        }
-
-        .hosp-status.full {
-            background: rgba(255, 77, 106, 0.1);
-            color: var(--red);
-            border: 1px solid rgba(255, 77, 106, 0.2);
-        }
-
-        .hosp-status::before {
+        .status-dot::before {
             content: '';
             width: 5px;
             height: 5px;
@@ -385,104 +354,114 @@
             background: currentColor;
         }
 
-        .wait-row {
+        .status-dot.good {
+            color: var(--green);
+            background: var(--green-light);
+        }
+
+        .status-dot.warn {
+            color: var(--amber);
+            background: var(--amber-light);
+        }
+
+        .status-dot.full {
+            color: var(--red);
+            background: var(--red-light);
+        }
+
+        .wait-line {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: var(--text2);
-            margin-bottom: 1rem;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--muted);
             padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--light);
         }
 
-        .wait-row strong {
-            color: var(--text);
+        .wait-line span {
+            font-family: var(--mono);
+            color: var(--dark);
         }
 
-        /* Ward mini-bars */
-        .wards-mini {
+        .ward-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 7px;
         }
 
-        .ward-row {
-            display: flex;
+        .ward-item {
+            display: grid;
+            grid-template-columns: 52px 1fr 36px;
             align-items: center;
             gap: 8px;
-            font-size: 12px;
         }
 
-        .ward-label {
-            width: 56px;
-            color: var(--text3);
+        .ward-name {
+            font-size: 10px;
             font-family: var(--mono);
-            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
+            color: var(--muted);
         }
 
-        .ward-bar-bg {
-            flex: 1;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
+        .ward-track {
+            height: 3px;
+            background: var(--light);
+            border-radius: 2px;
             overflow: hidden;
         }
 
-        .ward-bar-fill {
+        .ward-fill {
             height: 100%;
-            border-radius: 3px;
-            transition: width 0.6s ease;
+            border-radius: 2px;
+            transition: width 0.5s ease;
         }
 
-        .ward-count {
+        .ward-val {
             font-family: var(--mono);
-            font-size: 11px;
-            color: var(--text2);
-            min-width: 38px;
+            font-size: 10px;
+            color: var(--muted);
             text-align: right;
         }
 
-        .hosp-specialties {
+        .spec-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 4px;
             margin-top: 1rem;
         }
 
-        .spec-tag {
+        .spec {
             font-size: 10px;
             font-family: var(--mono);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 3px;
-            background: rgba(0, 200, 255, 0.05);
-            color: var(--text3);
-            border: 1px solid var(--border);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+            background: var(--off-white);
+            color: var(--muted);
+            border: 1px solid var(--light);
         }
 
-        /* ─── DETAIL PANEL ─── */
+        /* ── DETAIL PANEL ── */
         .detail-panel {
             display: none;
-            background: var(--card);
-            border: 1px solid var(--border2);
-            border-radius: 16px;
+            background: var(--white);
+            border: 1px solid var(--light);
+            border-radius: 10px;
             padding: 2rem;
-            margin-bottom: 2.5rem;
-            animation: fadeIn 0.3s ease;
+            margin-bottom: 2rem;
+            animation: slideDown 0.2s ease;
         }
 
-        .detail-panel.visible {
+        .detail-panel.open {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(10px)
+                transform: translateY(-6px)
             }
 
             to {
@@ -491,151 +470,220 @@
             }
         }
 
-        .detail-top {
+        .detail-header {
             display: flex;
-            align-items: flex-start;
             justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--light);
         }
 
         .detail-name {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-family: var(--serif);
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--black);
+            letter-spacing: -0.01em;
         }
 
-        .detail-location {
-            color: var(--text2);
-            font-size: 13px;
+        .detail-addr {
+            font-size: 12px;
+            color: var(--muted);
             margin-top: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .close-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text2);
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 28px;
+            height: 28px;
+            background: var(--off-white);
+            border: 1px solid var(--light);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--muted);
             cursor: pointer;
-            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
+            transition: all 0.15s;
+            flex-shrink: 0;
         }
 
         .close-btn:hover {
-            background: rgba(255, 77, 106, 0.1);
-            color: var(--red);
-            border-color: var(--red);
+            background: var(--light);
+            color: var(--dark);
         }
 
-        .wards-grid {
+        .wards-detail {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--light);
+            border: 1px solid var(--light);
+            border-radius: 8px;
+            overflow: hidden;
             margin-bottom: 1.5rem;
         }
 
-        .ward-card {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        .ward-detail-card {
+            background: var(--white);
             padding: 1.25rem;
-            transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
         }
 
-        .ward-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--ward-color);
-            transform: scaleX(var(--fill-ratio));
-            transform-origin: left;
-            transition: transform 0.6s ease;
-        }
-
-        .ward-type-label {
-            font-size: 10px;
+        .ward-detail-label {
             font-family: var(--mono);
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--ward-color);
+            letter-spacing: 0.06em;
             margin-bottom: 8px;
+        }
+
+        .ward-detail-num {
+            font-family: var(--mono);
+            font-size: 2rem;
+            font-weight: 500;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .ward-detail-total {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .ward-detail-bar {
+            height: 3px;
+            background: var(--light);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .ward-detail-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .ward-detail-price {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            padding-top: 8px;
+            border-top: 1px solid var(--light);
+        }
+
+        .ward-icu .ward-detail-label,
+        .ward-icu .ward-detail-num {
+            color: var(--red);
+        }
+
+        .ward-icu .ward-detail-fill {
+            background: var(--red);
+        }
+
+        .ward-premium .ward-detail-label,
+        .ward-premium .ward-detail-num {
+            color: var(--amber);
+        }
+
+        .ward-premium .ward-detail-fill {
+            background: var(--amber);
+        }
+
+        .ward-regular .ward-detail-label,
+        .ward-regular .ward-detail-num {
+            color: var(--blue);
+        }
+
+        .ward-regular .ward-detail-fill {
+            background: var(--blue);
+        }
+
+        .ward-general .ward-detail-label,
+        .ward-general .ward-detail-num {
+            color: var(--green);
+        }
+
+        .ward-general .ward-detail-fill {
+            background: var(--green);
+        }
+
+        .detail-specs {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             gap: 6px;
         }
 
-        .ward-type-label::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--ward-color);
-            border-radius: 2px;
-            opacity: 0.7;
-        }
-
-        .ward-avail-num {
-            font-size: 2.2rem;
-            font-weight: 700;
-            font-family: var(--mono);
-            line-height: 1;
-            color: var(--ward-color);
-        }
-
-        .ward-total {
-            font-size: 13px;
-            color: var(--text3);
-            margin-top: 3px;
-        }
-
-        .ward-price {
+        .detail-spec {
             font-size: 11px;
-            color: var(--text3);
             font-family: var(--mono);
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid var(--border);
+            padding: 3px 10px;
+            border-radius: 4px;
+            background: var(--green-light);
+            color: var(--green);
+            border: 1px solid #c6e6d2;
         }
 
-        .capacity-ring {
-            margin-top: 8px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 2px;
+        /* ── AI ASSIGN ── */
+        .assign-section {
+            background: var(--white);
+            border: 1px solid var(--light);
+            border-radius: 10px;
             overflow: hidden;
         }
 
-        .capacity-fill {
-            height: 100%;
-            border-radius: 2px;
-            background: var(--ward-color);
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        .assign-top {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        /* ─── AI ASSIGN PANEL ─── */
-        .assign-section {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+        .assign-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .model-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            background: var(--green-light);
+            color: var(--green);
+            border: 1px solid #c6e6d2;
+        }
+
+        .assign-body {
             padding: 2rem;
-            margin-bottom: 2.5rem;
         }
 
-        .assign-form {
+        .api-url-row {
+            display: none;
+        }
+
+        .api-url-row input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--light);
+            border-radius: 6px;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--dark);
+            background: var(--off-white);
+            outline: none;
+        }
+
+        .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .form-group {
@@ -648,275 +696,344 @@
             grid-column: 1 / -1;
         }
 
-        label {
-            font-size: 12px;
-            font-family: var(--mono);
-            color: var(--text2);
+        .form-label {
+            font-size: 11px;
+            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.06em;
+            color: var(--muted);
         }
 
-        input,
-        select,
-        textarea {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-family: var(--font);
+        .form-input {
+            padding: 9px 12px;
+            border: 1px solid var(--light);
+            border-radius: 6px;
+            font-family: var(--sans);
             font-size: 14px;
-            transition: border-color 0.2s;
+            color: var(--black);
+            background: var(--white);
             outline: none;
+            transition: border-color 0.15s;
         }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--cyan);
-        }
-
-        select option {
-            background: var(--bg3);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .severity-btns {
-            display: flex;
-            gap: 8px;
-        }
-
-        .sev-btn {
-            flex: 1;
-            padding: 8px;
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text2);
-            font-family: var(--font);
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .sev-btn:hover {
-            border-color: var(--border2);
-        }
-
-        .sev-btn.active.low {
-            background: rgba(0, 229, 160, 0.1);
+        .form-input:focus {
             border-color: var(--green);
-            color: var(--green);
         }
 
-        .sev-btn.active.medium {
-            background: rgba(0, 200, 255, 0.1);
-            border-color: var(--cyan);
-            color: var(--cyan);
+        .form-input::placeholder {
+            color: var(--mid);
         }
 
-        .sev-btn.active.high {
-            background: rgba(255, 184, 48, 0.1);
-            border-color: var(--amber);
-            color: var(--amber);
+        textarea.form-input {
+            resize: vertical;
+            min-height: 72px;
         }
 
-        .sev-btn.active.critical {
-            background: rgba(255, 77, 106, 0.1);
-            border-color: var(--red);
-            color: var(--red);
+        .sev-group {
+            display: flex;
+            gap: 6px;
         }
 
-        .assign-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--cyan);
-            border: none;
-            border-radius: 10px;
-            color: var(--bg);
-            font-family: var(--font);
-            font-weight: 600;
-            font-size: 15px;
+        .sev-opt {
+            flex: 1;
+            padding: 8px 4px;
+            text-align: center;
+            background: var(--off-white);
+            border: 1px solid var(--light);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--muted);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
+        }
+
+        .sev-opt:hover {
+            border-color: var(--mid);
+            color: var(--dark);
+        }
+
+        .sev-opt.sel-low {
+            background: var(--green-light);
+            border-color: #c6e6d2;
+            color: var(--green);
+            font-weight: 500;
+        }
+
+        .sev-opt.sel-medium {
+            background: var(--blue-light);
+            border-color: #bfdbfe;
+            color: var(--blue);
+            font-weight: 500;
+        }
+
+        .sev-opt.sel-high {
+            background: var(--amber-light);
+            border-color: #fde68a;
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        .sev-opt.sel-critical {
+            background: var(--red-light);
+            border-color: #fecaca;
+            color: var(--red);
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 1.25rem;
+            padding: 11px;
+            background: var(--green);
+            border: none;
+            border-radius: 7px;
+            color: white;
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
-        .assign-btn:hover {
-            background: #33d4ff;
-            transform: translateY(-1px);
+        .submit-btn:hover {
+            background: var(--green-mid);
         }
 
-        .assign-btn:active {
-            transform: translateY(0);
-        }
-
-        .assign-btn:disabled {
+        .submit-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
 
-        /* ─── AI RESULT ─── */
+        /* ── AI RESULT ── */
         .ai-result {
             display: none;
-            background: var(--bg3);
-            border: 1px solid var(--border2);
-            border-radius: 12px;
-            padding: 1.5rem;
             margin-top: 1.5rem;
-            animation: fadeIn 0.3s ease;
+            border-top: 1px solid var(--light);
+            padding-top: 1.5rem;
+            animation: slideDown 0.2s ease;
         }
 
-        .ai-result.visible {
+        .ai-result.show {
             display: block;
         }
 
-        .ai-result-header {
+        .result-header {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            align-items: flex-start;
+            justify-content: space-between;
             margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
         }
 
-        .ai-badge {
+        .result-hospital {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--black);
+            letter-spacing: -0.01em;
+        }
+
+        .result-ward {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 3px;
+            font-family: var(--mono);
+        }
+
+        .result-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
             font-family: var(--mono);
             font-size: 10px;
             padding: 3px 8px;
             border-radius: 3px;
-            background: rgba(0, 200, 255, 0.1);
-            color: var(--cyan);
-            border: 1px solid var(--border2);
-            letter-spacing: 0.05em;
+            border: 1px solid;
         }
 
-        .ai-hospital-name {
-            font-size: 1.3rem;
-            font-weight: 700;
+        .badge-engine {
+            background: var(--off-white);
+            color: var(--muted);
+            border-color: var(--light);
+        }
+
+        .badge-urgent {
+            background: var(--red-light);
+            color: var(--red);
+            border-color: #fecaca;
+        }
+
+        .badge-conf {
+            background: var(--green-light);
             color: var(--green);
+            border-color: #c6e6d2;
         }
 
-        .ai-ward {
-            font-family: var(--mono);
-            font-size: 12px;
-            color: var(--text2);
-            margin-top: 2px;
-        }
-
-        .ai-reason {
-            color: var(--text2);
+        .result-reason {
             font-size: 14px;
-            line-height: 1.6;
+            color: var(--dark);
+            line-height: 1.65;
+            padding: 1rem 1.25rem;
+            background: var(--off-white);
+            border-radius: 7px;
+            border-left: 3px solid var(--green);
             margin-bottom: 1rem;
-            padding: 12px;
-            background: rgba(0, 200, 255, 0.04);
-            border-radius: 8px;
-            border-left: 3px solid var(--cyan);
         }
 
-        .ai-meta {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            font-size: 13px;
+        .result-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--light);
+            border: 1px solid var(--light);
+            border-radius: 7px;
+            overflow: hidden;
+            margin-bottom: 1rem;
         }
 
-        .ai-meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
+        .meta-item {
+            background: var(--white);
+            padding: 0.75rem 1rem;
         }
 
-        .ai-meta-label {
-            font-family: var(--mono);
+        .meta-label {
             font-size: 10px;
+            font-family: var(--mono);
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--text3);
+            color: var(--muted);
+            margin-bottom: 3px;
         }
 
-        .ai-meta-val {
-            color: var(--text);
+        .meta-val {
+            font-size: 14px;
             font-weight: 500;
+            color: var(--black);
         }
 
-        .urgency-flag {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-family: var(--mono);
-            background: rgba(255, 77, 106, 0.1);
-            color: var(--red);
-            border: 1px solid rgba(255, 77, 106, 0.3);
-            animation: urgent 1.5s infinite;
-        }
-
-        @keyframes urgent {
-
-            0%,
-            100% {
-                opacity: 1
-            }
-
-            50% {
-                opacity: 0.6
-            }
-        }
-
-        .confidence-bar {
-            margin-top: 1rem;
+        .conf-bar-wrap {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 12px;
-            color: var(--text2);
         }
 
-        .conf-bg {
+        .conf-track {
             flex: 1;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
+            height: 3px;
+            background: var(--light);
+            border-radius: 2px;
             overflow: hidden;
         }
 
         .conf-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--cyan), var(--green));
-            border-radius: 3px;
+            background: var(--green);
+            border-radius: 2px;
+            transition: width 0.6s ease;
         }
 
-        /* ─── LOADING ─── */
+        .conf-pct {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .alts-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .alt-item {
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--light);
+            color: var(--muted);
+        }
+
+        .alt-item:last-child {
+            border-bottom: none;
+        }
+
+        .alt-name {
+            font-weight: 500;
+            color: var(--dark);
+            min-width: 160px;
+        }
+
+        /* ── TECH STACK ── */
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1px;
+            background: var(--light);
+            border: 1px solid var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .stack-card {
+            background: var(--white);
+            padding: 1.5rem;
+            transition: background 0.15s;
+        }
+
+        .stack-card:hover {
+            background: var(--off-white);
+        }
+
+        .stack-layer {
+            font-family: var(--mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--green);
+            margin-bottom: 6px;
+        }
+
+        .stack-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--black);
+            margin-bottom: 6px;
+        }
+
+        .stack-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ── LOADING ── */
         .loading {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3rem;
-            color: var(--text2);
-            flex-direction: column;
-            gap: 1rem;
+            padding: 4rem;
+            color: var(--muted);
+            gap: 10px;
+            font-size: 13px;
         }
 
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 2px solid var(--border);
-            border-top-color: var(--cyan);
+        .spin {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--light);
+            border-top-color: var(--green);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.7s linear infinite;
         }
 
         @keyframes spin {
@@ -925,162 +1042,104 @@
             }
         }
 
-        /* ─── TOAST ─── */
-        .toast-container {
+        /* ── TOAST ── */
+        .toasts {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 1.5rem;
+            right: 1.5rem;
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .toast {
-            background: var(--card);
-            border: 1px solid var(--border2);
-            border-radius: 10px;
-            padding: 12px 16px;
-            font-size: 13px;
-            max-width: 320px;
-            animation: slideIn 0.3s ease;
+            background: var(--white);
+            border: 1px solid var(--light);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            animation: slideUp 0.2s ease;
+            max-width: 280px;
         }
 
-        @keyframes slideIn {
+        @keyframes slideUp {
             from {
-                transform: translateX(100px);
-                opacity: 0
+                opacity: 0;
+                transform: translateY(8px)
             }
 
             to {
-                transform: translateX(0);
-                opacity: 1
+                opacity: 1;
+                transform: translateY(0)
             }
         }
 
-        .toast.success {
-            border-color: rgba(0, 229, 160, 0.3);
+        .toast.ok {
             color: var(--green);
+            border-color: #c6e6d2;
         }
 
-        .toast.error {
-            border-color: rgba(255, 77, 106, 0.3);
+        .toast.err {
             color: var(--red);
+            border-color: #fecaca;
         }
 
         .toast.info {
-            border-color: var(--border2);
-            color: var(--cyan);
+            color: var(--muted);
         }
 
-        /* ─── FOOTER ─── */
+        /* ── FOOTER ── */
         footer {
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid var(--border);
-            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--light);
+            padding: 1.25rem 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: var(--text3);
             font-size: 12px;
-            font-family: var(--mono);
+            color: var(--muted);
         }
 
-        .tech-stack {
+        .tech-pills {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
         .tech-pill {
+            font-family: var(--mono);
+            font-size: 10px;
             padding: 2px 8px;
             border-radius: 3px;
-            background: rgba(0, 200, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text3);
-            font-size: 10px;
-            letter-spacing: 0.04em;
+            background: var(--off-white);
+            border: 1px solid var(--light);
+            color: var(--muted);
         }
 
-        /* ─── RESPONSIVE ─── */
         @media (max-width: 768px) {
             .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .assign-form {
+            .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .assign-form .form-group.full {
-                grid-column: 1;
+            .wards-detail {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .result-meta {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             nav {
                 display: none;
             }
-
-            .hospitals-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ─── TABS ─── */
-        .view-tabs {
-            display: flex;
-            gap: 4px;
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 4px;
-            margin-bottom: 2rem;
-            width: fit-content;
-        }
-
-        .view-tab {
-            padding: 8px 20px;
-            border-radius: 7px;
-            border: none;
-            background: transparent;
-            color: var(--text2);
-            font-family: var(--font);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .view-tab.active {
-            background: var(--card);
-            color: var(--text);
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        /* API CONFIG */
-        .api-config {
-            background: rgba(255, 184, 48, 0.05);
-            border: 1px solid rgba(255, 184, 48, 0.2);
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 13px;
-            color: var(--amber);
-        }
-
-        .api-config input {
-            flex: 1;
-            background: var(--bg3);
-            border-color: rgba(255, 184, 48, 0.2);
-            color: var(--text);
-            font-family: var(--mono);
-            font-size: 12px;
         }
     </style>
 </head>
@@ -1089,595 +1148,419 @@
 
     <header>
         <div class="logo">
-            <div class="logo-icon">🏥</div>
-            <span>ER</span>LoadBalancer
-            <span class="badge">GEMINI AI</span>
+            <div class="logo-mark">ER</div>
+            LoadBalancer
+            <span class="logo-sep">/</span>
+            <span class="gemini-pill">Gemini AI</span>
         </div>
         <nav>
-            <button class="active" onclick="switchTab('hospitals')">Hospitals</button>
-            <button onclick="switchTab('assign')">AI Assign</button>
-            <button onclick="switchTab('about')">Stack</button>
+            <button class="active" onclick="showView('hospitals')">Hospitals</button>
+            <button onclick="showView('assign')">AI Assign</button>
+            <button onclick="showView('stack')">Stack</button>
         </nav>
     </header>
 
     <main>
-        <!-- HERO -->
         <div class="hero">
-            <div class="hero-tag">MyAI Future Hackathon 2024 — Malaysia</div>
+            <p class="hero-eyebrow">Emergency Resource Management</p>
             <h1>Intelligent <em>Emergency Room</em><br>Load Distribution</h1>
-            <p class="hero-sub">AI-powered patient routing across hospitals. Powered by Gemini, Vertex AI, and Google
-                Cloud — moving from Chat to Autonomous Action.</p>
+            <p class="hero-sub">AI-powered patient routing across hospital networks. Powered by Gemini and Vertex AI —
+                from chat to autonomous action.</p>
         </div>
 
-        <!-- STATS -->
         <div class="stats" id="statsRow">
-            <div class="stat-card">
-                <div class="stat-num" id="statHospitals">—</div>
+            <div class="stat">
+                <div class="stat-num green" id="s1">—</div>
                 <div class="stat-label">Hospitals Online</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-num" id="statBeds">—</div>
-                <div class="stat-label">Total Available Beds</div>
+            <div class="stat">
+                <div class="stat-num" id="s2">—</div>
+                <div class="stat-label">Available Beds</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-num" id="statICU">—</div>
+            <div class="stat">
+                <div class="stat-num" id="s3">—</div>
                 <div class="stat-label">ICU Beds Free</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-num" id="statAvgWait">—</div>
+            <div class="stat">
+                <div class="stat-num" id="s4">—</div>
                 <div class="stat-label">Avg Wait (min)</div>
             </div>
         </div>
 
-        <!-- TABS -->
-        <div class="view-tabs">
-            <button class="view-tab active" id="tab-hospitals" onclick="showView('hospitals')">🏥 Hospital
+        <div class="tabs">
+            <button class="tab-btn active" id="tab-hospitals" onclick="showView('hospitals')">Hospital
                 Dashboard</button>
-            <button class="view-tab" id="tab-assign" onclick="showView('assign')">🤖 AI Patient Assign</button>
-            <button class="view-tab" id="tab-about" onclick="showView('about')">⚙️ Tech Stack</button>
+            <button class="tab-btn" id="tab-assign" onclick="showView('assign')">AI Patient Assign</button>
+            <button class="tab-btn" id="tab-stack" onclick="showView('stack')">Tech Stack</button>
         </div>
 
         <!-- HOSPITALS VIEW -->
         <div id="view-hospitals">
             <div class="section-header">
-                <div class="section-title">Hospital Network</div>
-                <span class="section-badge" id="lastUpdate">Loading...</span>
+                <div class="section-title">Network Overview</div>
+                <div class="section-meta" id="lastUpdate">Loading...</div>
             </div>
 
-            <div id="hospitalsLoading" class="loading">
-                <div class="spinner"></div>
-                <span>Connecting to Firestore...</span>
-            </div>
-
-            <div id="hospitalsFail" style="display:none; padding:2rem; text-align:center; color:var(--text2);">
-                <p style="font-size:2rem;margin-bottom:1rem;">⚠️</p>
-                <p>Could not connect to backend. Using demo data.</p>
-                <button onclick="loadHospitals()"
-                    style="margin-top:1rem;padding:8px 20px;background:var(--card);border:1px solid var(--border2);color:var(--cyan);border-radius:8px;cursor:pointer;font-family:var(--font);">Retry</button>
+            <div id="loadingState" class="loading">
+                <div class="spin"></div> Connecting to database
             </div>
 
             <div class="hospitals-grid" id="hospitalsGrid" style="display:none;"></div>
 
-            <!-- DETAIL PANEL -->
             <div class="detail-panel" id="detailPanel">
-                <div class="detail-top">
+                <div class="detail-header">
                     <div>
-                        <div class="detail-name" id="detailName"></div>
-                        <div class="detail-location" id="detailLocation"></div>
+                        <div class="detail-name" id="dName"></div>
+                        <div class="detail-addr" id="dAddr"></div>
                     </div>
                     <button class="close-btn" onclick="closeDetail()">✕</button>
                 </div>
-                <div class="wards-grid" id="wardsGrid"></div>
-                <div id="specialtiesRow" class="hosp-specialties"></div>
+                <div class="wards-detail" id="wardsDetail"></div>
+                <div class="detail-specs" id="detailSpecs"></div>
             </div>
         </div>
 
-        <!-- AI ASSIGN VIEW -->
+        <!-- ASSIGN VIEW -->
         <div id="view-assign" style="display:none;">
-            <div class="section-header">
-                <div class="section-title">AI Patient Assignment</div>
-                <span class="section-badge">Gemini 1.5 Flash</span>
-            </div>
-
-            <div class="api-config">
-                <span>🔑</span>
-                <span style="white-space:nowrap;font-family:var(--mono);font-size:11px;">Backend URL:</span>
-                <input type="text" id="apiBaseUrl" value="http://localhost:8000"
-                    placeholder="https://your-cloudrun-url.run.app" />
-            </div>
-
             <div class="assign-section">
-                <div class="assign-form">
-                    <div class="form-group">
-                        <label>Patient Condition</label>
-                        <input type="text" id="patientCondition" placeholder="e.g. heart attack, fracture, fever" />
+                <div class="assign-top">
+                    <div class="assign-title">Patient Assignment</div>
+                    <span class="model-tag">gemini-1.5-flash</span>
+                </div>
+                <div class="assign-body">
+                    <div class="api-url-row">
+                        <input type="text" id="apiBaseUrl"
+                            value="https://er-load-balancer-175772493560.asia-southeast1.run.app" />
                     </div>
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="patientLocation" placeholder="e.g. Cheras, Ampang, Subang" />
-                    </div>
-                    <div class="form-group">
-                        <label>Age</label>
-                        <input type="number" id="patientAge" placeholder="e.g. 45" min="0" max="120" />
-                    </div>
-                    <div class="form-group">
-                        <label>Severity</label>
-                        <div class="severity-btns">
-                            <button class="sev-btn low" onclick="setSeverity('low')">Low</button>
-                            <button class="sev-btn active medium" onclick="setSeverity('medium')">Medium</button>
-                            <button class="sev-btn high" onclick="setSeverity('high')">High</button>
-                            <button class="sev-btn critical" onclick="setSeverity('critical')">Critical</button>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Condition</label>
+                            <input type="text" class="form-input" id="pCondition"
+                                placeholder="e.g. heart attack, fracture" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-input" id="pLocation" placeholder="e.g. Cheras, Subang" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-input" id="pAge" placeholder="e.g. 45" min="0" max="120" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Severity</label>
+                            <div class="sev-group">
+                                <button class="sev-opt" onclick="setSev('low')">Low</button>
+                                <button class="sev-opt sel-medium" onclick="setSev('medium')">Medium</button>
+                                <button class="sev-opt" onclick="setSev('high')">High</button>
+                                <button class="sev-opt" onclick="setSev('critical')">Critical</button>
+                            </div>
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Additional Notes</label>
+                            <textarea class="form-input" id="pNotes"
+                                placeholder="Relevant medical history or context..."></textarea>
                         </div>
                     </div>
-                    <div class="form-group full">
-                        <label>Additional Notes</label>
-                        <textarea id="patientNotes" placeholder="Any relevant medical history or context..."></textarea>
-                    </div>
+                    <button class="submit-btn" id="assignBtn" onclick="runAssign()">
+                        Assign with Gemini AI
+                    </button>
+                    <div class="ai-result" id="aiResult"></div>
                 </div>
-                <button class="assign-btn" id="assignBtn" onclick="runAssign()">
-                    <span>🤖</span> Assign with Gemini AI
-                </button>
-
-                <div class="ai-result" id="aiResult"></div>
             </div>
         </div>
 
-        <!-- ABOUT VIEW -->
-        <div id="view-about" style="display:none;">
+        <!-- STACK VIEW -->
+        <div id="view-stack" style="display:none;">
             <div class="section-header">
-                <div class="section-title">Google AI Ecosystem Stack</div>
+                <div class="section-title">Google AI Ecosystem</div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;">
-                <div class="ward-card" style="--ward-color:var(--cyan);--fill-ratio:1;">
-                    <div class="ward-type-label">Intelligence (Brain)</div>
-                    <div style="font-size:1.1rem;font-weight:600;margin-bottom:6px;">Gemini 1.5 Flash / Pro</div>
-                    <div style="font-size:13px;color:var(--text2);line-height:1.6;">Core AI decision engine. Analyzes
-                        patient condition, severity, and hospital data to recommend optimal assignment with reasoning.
-                    </div>
+            <div class="stack-grid">
+                <div class="stack-card">
+                    <div class="stack-layer">Intelligence</div>
+                    <div class="stack-name">Gemini 1.5 Flash</div>
+                    <div class="stack-desc">Core AI decision engine. Analyzes patient condition, severity, and hospital
+                        capacity to produce structured assignment decisions with reasoning.</div>
                 </div>
-                <div class="ward-card" style="--ward-color:#a78bfa;--fill-ratio:1;">
-                    <div class="ward-type-label" style="color:#a78bfa;">Orchestrator</div>
-                    <div style="font-size:1.1rem;font-weight:600;margin-bottom:6px;">Vertex AI Agent Builder</div>
-                    <div style="font-size:13px;color:var(--text2);line-height:1.6;">Orchestrates multi-step agentic
-                        workflows. Enables autonomous execution beyond simple chat responses.</div>
+                <div class="stack-card">
+                    <div class="stack-layer">Orchestrator</div>
+                    <div class="stack-name">Vertex AI Agent Builder</div>
+                    <div class="stack-desc">Orchestrates multi-step agentic workflows, enabling autonomous execution
+                        beyond simple conversational responses.</div>
                 </div>
-                <div class="ward-card" style="--ward-color:var(--green);--fill-ratio:1;">
-                    <div class="ward-type-label" style="color:var(--green);">Database</div>
-                    <div style="font-size:1.1rem;font-weight:600;margin-bottom:6px;">Google Cloud Firestore</div>
-                    <div style="font-size:13px;color:var(--text2);line-height:1.6;">Real-time NoSQL database for
-                        hospital data. Native mode in asia-southeast1 for low-latency Malaysian operations.</div>
+                <div class="stack-card">
+                    <div class="stack-layer">Database</div>
+                    <div class="stack-name">Google Cloud Firestore</div>
+                    <div class="stack-desc">Real-time NoSQL database storing live hospital ward data. Native mode in
+                        asia-southeast1 for low-latency Malaysian operations.</div>
                 </div>
-                <div class="ward-card" style="--ward-color:var(--amber);--fill-ratio:1;">
-                    <div class="ward-type-label" style="color:var(--amber);">Deployment</div>
-                    <div style="font-size:1.1rem;font-weight:600;margin-bottom:6px;">Google Cloud Run</div>
-                    <div style="font-size:13px;color:var(--text2);line-height:1.6;">Serverless container deployment.
-                        Auto-scales the FastAPI backend with zero infrastructure management.</div>
+                <div class="stack-card">
+                    <div class="stack-layer">Deployment</div>
+                    <div class="stack-name">Google Cloud Run</div>
+                    <div class="stack-desc">Serverless container deployment. Auto-scales the FastAPI backend with zero
+                        infrastructure management required.</div>
                 </div>
-                <div class="ward-card" style="--ward-color:#f472b6;--fill-ratio:1;">
-                    <div class="ward-type-label" style="color:#f472b6;">Context / RAG</div>
-                    <div style="font-size:1.1rem;font-weight:600;margin-bottom:6px;">Vertex AI Search</div>
-                    <div style="font-size:13px;color:var(--text2);line-height:1.6;">Grounded Retrieval-Augmented
-                        Generation. Queries national medical datasets to ground Gemini's decisions.</div>
+                <div class="stack-card">
+                    <div class="stack-layer">Context / RAG</div>
+                    <div class="stack-name">Vertex AI Search</div>
+                    <div class="stack-desc">Grounded Retrieval-Augmented Generation. Queries national medical datasets
+                        to ground Gemini's decisions in real data.</div>
                 </div>
-                <div class="ward-card" style="--ward-color:#60a5fa;--fill-ratio:1;">
-                    <div class="ward-type-label" style="color:#60a5fa;">Dev Lifecycle</div>
-                    <div style="font-size:1.1rem;font-weight:600;margin-bottom:6px;">Cloud Workstations + AI Studio
-                    </div>
-                    <div style="font-size:13px;color:var(--text2);line-height:1.6;">Google Cloud Workstations for
-                        coding. AI Studio for prompt engineering and model testing before production.</div>
+                <div class="stack-card">
+                    <div class="stack-layer">Development</div>
+                    <div class="stack-name">AI Studio + Antigravity</div>
+                    <div class="stack-desc">Google AI Studio for prompt engineering and model testing. Antigravity for
+                        seamless Cloud Run deployment from VS Code.</div>
                 </div>
             </div>
         </div>
     </main>
 
     <footer>
-        <div>ER Load Balancer © 2024 — MyAI Future Hackathon</div>
-        <div class="tech-stack">
+        <span>ER LoadBalancer — Looking4Intern</span>
+        <div class="tech-pills">
             <span class="tech-pill">Gemini 1.5</span>
             <span class="tech-pill">Vertex AI</span>
             <span class="tech-pill">Cloud Run</span>
             <span class="tech-pill">Firestore</span>
             <span class="tech-pill">FastAPI</span>
-            <span class="tech-pill">Python 3.11</span>
         </div>
     </footer>
 
-    <div class="toast-container" id="toastContainer"></div>
+    <div class="toasts" id="toasts"></div>
 
     <script>
-        // ── STATE ──────────────────────────────────────────────────
-        let hospitals = [];
-        let selectedHospital = null;
-        let currentSeverity = 'medium';
+        let hospitals = [], selSeverity = 'medium', selectedH = null;
 
-        const DEMO_HOSPITALS = [
-            {
-                id: 'hkl',
-                name: 'Hospital Kuala Lumpur (HKL)',
-                short_name: 'HKL',
-                location: 'Kuala Lumpur',
-                address: 'Jalan Pahang, 50586 Kuala Lumpur',
-                wait_time: 25,
-                specialties: ['cardiac', 'trauma', 'neurology', 'oncology', 'pediatric'],
-                image_color: '#0ea5e9',
-                wards: {
-                    icu: { available: 3, total: 8, price_myr: 800 },
-                    premium: { available: 5, total: 20, price_myr: 350 },
-                    regular: { available: 18, total: 60, price_myr: 150 },
-                    general: { available: 40, total: 120, price_myr: 50 }
-                }
-            },
-            {
-                id: 'ppum',
-                name: 'Pusat Perubatan Universiti Malaya (PPUM)',
-                short_name: 'PPUM',
-                location: 'Petaling Jaya',
-                address: 'Jalan Universiti, 59100 Kuala Lumpur',
-                wait_time: 35,
-                specialties: ['cardiac', 'orthopedic', 'gastroenterology', 'nephrology'],
-                image_color: '#10b981',
-                wards: {
-                    icu: { available: 2, total: 6, price_myr: 750 },
-                    premium: { available: 8, total: 25, price_myr: 320 },
-                    regular: { available: 22, total: 80, price_myr: 140 },
-                    general: { available: 55, total: 150, price_myr: 45 }
-                }
-            },
-            {
-                id: 'ampang',
-                name: 'Hospital Ampang',
-                short_name: 'HAmpang',
-                location: 'Ampang, Selangor',
-                address: 'Jalan Mewah Utama, 68000 Ampang',
-                wait_time: 20,
-                specialties: ['trauma', 'orthopedic', 'general surgery', 'pediatric'],
-                image_color: '#f59e0b',
-                wards: {
-                    icu: { available: 1, total: 5, price_myr: 700 },
-                    premium: { available: 3, total: 15, price_myr: 300 },
-                    regular: { available: 12, total: 50, price_myr: 130 },
-                    general: { available: 30, total: 100, price_myr: 40 }
-                }
-            },
-            {
-                id: 'sunway',
-                name: 'Sunway Medical Centre',
-                short_name: 'Sunway',
-                location: 'Subang Jaya, Selangor',
-                address: 'No 5, Jalan Lagoon Selatan, 47500',
-                wait_time: 15,
-                specialties: ['cardiac', 'oncology', 'neurology', 'orthopedic', 'IVF'],
-                image_color: '#8b5cf6',
-                wards: {
-                    icu: { available: 4, total: 10, price_myr: 1200 },
-                    premium: { available: 10, total: 40, price_myr: 600 },
-                    regular: { available: 25, total: 80, price_myr: 280 },
-                    general: { available: 15, total: 60, price_myr: 120 }
-                }
-            }
+        const DEMO = [
+            { id: 'hkl', name: 'Hospital Kuala Lumpur (HKL)', location: 'Kuala Lumpur', address: 'Jalan Pahang, 50586 Kuala Lumpur', wait_time: 25, specialties: ['cardiac', 'trauma', 'neurology', 'oncology', 'pediatric'], wards: { icu: { available: 3, total: 8, price_myr: 800 }, premium: { available: 5, total: 20, price_myr: 350 }, regular: { available: 18, total: 60, price_myr: 150 }, general: { available: 40, total: 120, price_myr: 50 } } },
+            { id: 'ppum', name: 'Pusat Perubatan Universiti Malaya (PPUM)', location: 'Petaling Jaya', address: 'Jalan Universiti, 59100 Kuala Lumpur', wait_time: 35, specialties: ['cardiac', 'orthopedic', 'gastroenterology', 'nephrology'], wards: { icu: { available: 2, total: 6, price_myr: 750 }, premium: { available: 8, total: 25, price_myr: 320 }, regular: { available: 22, total: 80, price_myr: 140 }, general: { available: 55, total: 150, price_myr: 45 } } },
+            { id: 'ampang', name: 'Hospital Ampang', location: 'Ampang, Selangor', address: 'Jalan Mewah Utama, 68000 Ampang', wait_time: 20, specialties: ['trauma', 'orthopedic', 'general surgery', 'pediatric'], wards: { icu: { available: 1, total: 5, price_myr: 700 }, premium: { available: 3, total: 15, price_myr: 300 }, regular: { available: 12, total: 50, price_myr: 130 }, general: { available: 30, total: 100, price_myr: 40 } } },
+            { id: 'sunway', name: 'Sunway Medical Centre', location: 'Subang Jaya, Selangor', address: 'No 5, Jalan Lagoon Selatan, 47500 Subang Jaya', wait_time: 15, specialties: ['cardiac', 'oncology', 'neurology', 'orthopedic', 'IVF'], wards: { icu: { available: 4, total: 10, price_myr: 1200 }, premium: { available: 10, total: 40, price_myr: 600 }, regular: { available: 25, total: 80, price_myr: 280 }, general: { available: 15, total: 60, price_myr: 120 } } }
         ];
 
-        // ── WARD CONFIG ────────────────────────────────────────────
-        const WARD_CONFIG = {
-            icu: { label: 'ICU', color: '#ff4d6a', icon: '🔴' },
-            premium: { label: 'Premium', color: '#ffb830', icon: '🟡' },
-            regular: { label: 'Regular', color: '#00c8ff', icon: '🔵' },
-            general: { label: 'General', color: '#00e5a0', icon: '🟢' }
+        const WARD_META = {
+            icu: { label: 'ICU', cls: 'ward-icu' },
+            premium: { label: 'Premium', cls: 'ward-premium' },
+            regular: { label: 'Regular', cls: 'ward-regular' },
+            general: { label: 'General', cls: 'ward-general' }
         };
 
-        // ── INIT ───────────────────────────────────────────────────
-        document.addEventListener('DOMContentLoaded', () => {
-            loadHospitals();
-        });
+        const WARD_COLORS = { icu: '#b91c1c', premium: '#b45309', regular: '#1d4ed8', general: '#1a6b3c' };
+
+        document.addEventListener('DOMContentLoaded', loadHospitals);
 
         async function loadHospitals() {
             const grid = document.getElementById('hospitalsGrid');
-            const loading = document.getElementById('hospitalsLoading');
-            const fail = document.getElementById('hospitalsFail');
-
-            loading.style.display = 'flex';
+            const load = document.getElementById('loadingState');
+            load.style.display = 'flex';
             grid.style.display = 'none';
-            fail.style.display = 'none';
 
             try {
-                const base = document.getElementById('apiBaseUrl').value || 'http://localhost:8000';
-                const res = await fetch(`${base}/hospitals`, { signal: AbortSignal.timeout(5000) });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
-                hospitals = data.hospitals || [];
-                toast('Connected to Firestore ✓', 'success');
-            } catch (e) {
-                console.warn('Backend unavailable, using demo data:', e.message);
-                hospitals = DEMO_HOSPITALS;
-                toast('Using demo data (backend offline)', 'info');
+                const base = document.getElementById('apiBaseUrl').value;
+                const r = await fetch(`${base}/hospitals`, { signal: AbortSignal.timeout(6000) });
+                if (!r.ok) throw new Error();
+                const d = await r.json();
+                hospitals = d.hospitals || [];
+                toast('Connected to Firestore', 'ok');
+            } catch {
+                hospitals = DEMO;
+                toast('Using demo data', 'info');
             }
 
-            loading.style.display = 'none';
+            load.style.display = 'none';
             grid.style.display = 'grid';
             renderHospitals();
             updateStats();
             document.getElementById('lastUpdate').textContent = 'Updated ' + new Date().toLocaleTimeString('en-MY');
         }
 
-        // ── RENDER HOSPITALS ───────────────────────────────────────
         function renderHospitals() {
             const grid = document.getElementById('hospitalsGrid');
             grid.innerHTML = '';
             hospitals.forEach(h => {
-                const card = buildHospitalCard(h);
-                grid.appendChild(card);
+                const el = document.createElement('div');
+                el.className = 'hospital-card';
+                el.id = 'hc-' + h.id;
+                const wards = h.wards || {};
+                const avail = Object.values(wards).reduce((s, w) => s + (w.available || 0), 0);
+                const total = Object.values(wards).reduce((s, w) => s + (w.total || 0), 0);
+                const pct = total > 0 ? avail / total : 0;
+                const statusCls = pct < 0.1 ? 'full' : pct < 0.3 ? 'warn' : 'good';
+                const statusTxt = pct < 0.1 ? 'Critical' : pct < 0.3 ? 'Limited' : 'Available';
+
+                const wardsHTML = Object.entries(wards).map(([k, w]) => {
+                    const fp = w.total > 0 ? Math.round(w.available / w.total * 100) : 0;
+                    return `<div class="ward-item">
+        <span class="ward-name">${k}</span>
+        <div class="ward-track"><div class="ward-fill" style="width:${fp}%;background:${WARD_COLORS[k] || '#888'}"></div></div>
+        <span class="ward-val">${w.available}/${w.total}</span>
+      </div>`;
+                }).join('');
+
+                el.innerHTML = `
+      <div class="hosp-top">
+        <div><div class="hosp-name">${h.name}</div><div class="hosp-loc">${h.location}</div></div>
+        <span class="status-dot ${statusCls}">${statusTxt}</span>
+      </div>
+      <div class="wait-line">Wait time <span>${h.wait_time || '?'} min</span></div>
+      <div class="ward-list">${wardsHTML}</div>
+      <div class="spec-row">${(h.specialties || []).slice(0, 4).map(s => `<span class="spec">${s}</span>`).join('')}</div>`;
+                el.onclick = () => openDetail(h);
+                grid.appendChild(el);
             });
         }
 
-        function buildHospitalCard(h) {
-            const card = document.createElement('div');
-            card.className = 'hospital-card';
-            card.id = `hcard-${h.id}`;
-            card.style.setProperty('--accent-color', h.image_color || '#00c8ff');
-
-            const wards = h.wards || {};
-            const totalAvail = Object.values(wards).reduce((s, w) => s + (w.available || 0), 0);
-            const totalBeds = Object.values(wards).reduce((s, w) => s + (w.total || 0), 0);
-            const pct = totalBeds > 0 ? (totalAvail / totalBeds) : 0;
-
-            let statusClass = 'good', statusText = 'Available';
-            if (pct < 0.1) { statusClass = 'full'; statusText = 'Critical'; }
-            else if (pct < 0.3) { statusClass = 'warn'; statusText = 'Limited'; }
-
-            const wardsHTML = Object.entries(wards).map(([key, w]) => {
-                const cfg = WARD_CONFIG[key] || { color: '#888', label: key };
-                const fillPct = w.total > 0 ? Math.round((w.available / w.total) * 100) : 0;
-                return `<div class="ward-row">
-      <span class="ward-label">${cfg.label}</span>
-      <div class="ward-bar-bg">
-        <div class="ward-bar-fill" style="width:${fillPct}%;background:${cfg.color};"></div>
-      </div>
-      <span class="ward-count">${w.available}/${w.total}</span>
-    </div>`;
-            }).join('');
-
-            const specsHTML = (h.specialties || []).slice(0, 4).map(s =>
-                `<span class="spec-tag">${s}</span>`).join('');
-
-            card.innerHTML = `
-    <div class="hosp-header">
-      <div>
-        <div class="hosp-name">${h.name}</div>
-        <div class="hosp-short">${h.location}</div>
-      </div>
-      <span class="hosp-status ${statusClass}">${statusText}</span>
-    </div>
-    <div class="wait-row">
-      ⏱ Wait: <strong>${h.wait_time || '?'} min</strong>
-      &nbsp;·&nbsp; 🛏 ${totalAvail} of ${totalBeds} beds free
-    </div>
-    <div class="wards-mini">${wardsHTML}</div>
-    <div class="hosp-specialties">${specsHTML}</div>
-  `;
-
-            card.onclick = () => openDetail(h);
-            return card;
-        }
-
-        // ── DETAIL PANEL ───────────────────────────────────────────
         function openDetail(h) {
-            selectedHospital = h;
-
-            // Highlight selected card
+            selectedH = h;
             document.querySelectorAll('.hospital-card').forEach(c => c.classList.remove('selected'));
-            const card = document.getElementById(`hcard-${h.id}`);
-            if (card) card.classList.add('selected');
+            const card = document.getElementById('hc-' + h.id);
+            if (card) { card.classList.add('selected'); }
 
-            document.getElementById('detailName').textContent = h.name;
-            document.getElementById('detailLocation').innerHTML = `📍 ${h.address || h.location}  ·  📞 ${h.contact || 'N/A'}`;
+            document.getElementById('dName').textContent = h.name;
+            document.getElementById('dAddr').textContent = (h.address || h.location) + (h.contact ? '  ·  ' + h.contact : '');
 
-            const wardsGrid = document.getElementById('wardsGrid');
-            wardsGrid.innerHTML = '';
-            const wards = h.wards || {};
-
-            Object.entries(wards).forEach(([key, w]) => {
-                const cfg = WARD_CONFIG[key] || { color: '#888', label: key };
-                const fillRatio = w.total > 0 ? w.available / w.total : 0;
-                const fillPct = Math.round(fillRatio * 100);
-                const wc = document.createElement('div');
-                wc.className = 'ward-card';
-                wc.style.setProperty('--ward-color', cfg.color);
-                wc.style.setProperty('--fill-ratio', fillRatio);
-                wc.innerHTML = `
-      <div class="ward-type-label">${cfg.label} Ward</div>
-      <div class="ward-avail-num">${w.available}</div>
-      <div class="ward-total">of ${w.total} beds available</div>
-      <div class="capacity-ring"><div class="capacity-fill" style="width:${fillPct}%"></div></div>
-      <div class="ward-price">RM ${(w.price_myr || 0).toLocaleString()} / night</div>
-    `;
-                wardsGrid.appendChild(wc);
+            const wd = document.getElementById('wardsDetail');
+            wd.innerHTML = '';
+            Object.entries(h.wards || {}).forEach(([k, w]) => {
+                const m = WARD_META[k] || { label: k, cls: '' };
+                const fp = w.total > 0 ? Math.round(w.available / w.total * 100) : 0;
+                const div = document.createElement('div');
+                div.className = `ward-detail-card ${m.cls}`;
+                div.innerHTML = `
+      <div class="ward-detail-label">${m.label}</div>
+      <div class="ward-detail-num">${w.available}</div>
+      <div class="ward-detail-total">of ${w.total} beds</div>
+      <div class="ward-detail-bar"><div class="ward-detail-fill" style="width:${fp}%"></div></div>
+      <div class="ward-detail-price">RM ${(w.price_myr || 0).toLocaleString()} / night</div>`;
+                wd.appendChild(div);
             });
 
-            const specsRow = document.getElementById('specialtiesRow');
-            specsRow.innerHTML = (h.specialties || []).map(s => `<span class="spec-tag">${s}</span>`).join('');
-
+            document.getElementById('detailSpecs').innerHTML = (h.specialties || []).map(s => `<span class="detail-spec">${s}</span>`).join('');
             const panel = document.getElementById('detailPanel');
-            panel.classList.add('visible');
+            panel.classList.add('open');
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         function closeDetail() {
-            document.getElementById('detailPanel').classList.remove('visible');
+            document.getElementById('detailPanel').classList.remove('open');
             document.querySelectorAll('.hospital-card').forEach(c => c.classList.remove('selected'));
-            selectedHospital = null;
         }
 
-        // ── STATS ──────────────────────────────────────────────────
         function updateStats() {
-            const total = hospitals.length;
-            let totalBeds = 0, icuBeds = 0, waitSum = 0;
+            let beds = 0, icu = 0, wait = 0;
             hospitals.forEach(h => {
-                const wards = h.wards || {};
-                Object.entries(wards).forEach(([k, w]) => {
-                    totalBeds += w.available || 0;
-                    if (k === 'icu') icuBeds += w.available || 0;
+                Object.entries(h.wards || {}).forEach(([k, w]) => {
+                    beds += w.available || 0;
+                    if (k === 'icu') icu += w.available || 0;
                 });
-                waitSum += h.wait_time || 0;
+                wait += h.wait_time || 0;
             });
-            document.getElementById('statHospitals').textContent = total;
-            document.getElementById('statBeds').textContent = totalBeds;
-            document.getElementById('statICU').textContent = icuBeds;
-            document.getElementById('statAvgWait').textContent = total > 0 ? Math.round(waitSum / total) : '—';
+            document.getElementById('s1').textContent = hospitals.length;
+            document.getElementById('s2').textContent = beds;
+            document.getElementById('s3').textContent = icu;
+            document.getElementById('s4').textContent = hospitals.length ? Math.round(wait / hospitals.length) : '—';
         }
 
-        // ── SEVERITY ───────────────────────────────────────────────
-        function setSeverity(sev) {
-            currentSeverity = sev;
-            document.querySelectorAll('.sev-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`.sev-btn.${sev}`).classList.add('active');
+        function setSev(s) {
+            selSeverity = s;
+            document.querySelectorAll('.sev-opt').forEach(b => b.className = 'sev-opt');
+            event.target.classList.add('sel-' + s);
         }
 
-        // ── AI ASSIGN ─────────────────────────────────────────────
         async function runAssign() {
-            const condition = document.getElementById('patientCondition').value.trim();
-            if (!condition) { toast('Please enter patient condition', 'error'); return; }
-
+            const cond = document.getElementById('pCondition').value.trim();
+            if (!cond) { toast('Enter patient condition', 'err'); return; }
             const btn = document.getElementById('assignBtn');
             btn.disabled = true;
-            btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;"></div> Asking Gemini...';
+            btn.innerHTML = '<div class="spin"></div> Asking Gemini...';
 
             const payload = {
-                condition,
-                severity: currentSeverity,
-                location: document.getElementById('patientLocation').value.trim() || null,
-                age: parseInt(document.getElementById('patientAge').value) || null,
-                notes: document.getElementById('patientNotes').value.trim() || null
+                condition: cond,
+                severity: selSeverity,
+                location: document.getElementById('pLocation').value.trim() || null,
+                age: parseInt(document.getElementById('pAge').value) || null,
+                notes: document.getElementById('pNotes').value.trim() || null
             };
 
             try {
-                const base = document.getElementById('apiBaseUrl').value || 'http://localhost:8000';
-                const res = await fetch(`${base}/assign`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                    signal: AbortSignal.timeout(15000)
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
-                renderAIResult(data.assignment);
-            } catch (e) {
-                console.warn('Backend unavailable, using client-side demo logic:', e.message);
-                renderAIResult(demoAssign(payload));
+                const base = document.getElementById('apiBaseUrl').value;
+                const r = await fetch(`${base}/assign`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(15000) });
+                if (!r.ok) throw new Error();
+                const d = await r.json();
+                showResult(d.assignment);
+            } catch {
+                showResult(fallbackAssign(payload));
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<span>🤖</span> Assign with Gemini AI';
+            btn.innerHTML = 'Assign with Gemini AI';
         }
 
-        function demoAssign(patient) {
-            const sev = patient.severity;
-            const cond = (patient.condition || '').toLowerCase();
-            let wardType = sev === 'critical' ? 'icu' : sev === 'high' ? 'premium' : sev === 'medium' ? 'regular' : 'general';
-
-            let bestIdx = 0;
-            let bestScore = -1;
-            hospitals.forEach((h, i) => {
-                let score = 0;
-                const wards = h.wards || {};
-                const ward = wards[wardType] || {};
-                if ((ward.available || 0) === 0) return;
-                score += (ward.available || 0) * 3;
-                score += Math.max(0, 30 - (h.wait_time || 30));
+        function fallbackAssign(p) {
+            const sev = p.severity, cond = (p.condition || '').toLowerCase();
+            const ward = sev === 'critical' ? 'icu' : sev === 'high' ? 'premium' : sev === 'medium' ? 'regular' : 'general';
+            let best = hospitals[0], bestScore = -1;
+            hospitals.forEach(h => {
+                let score = (h.wards?.[ward]?.available || 0) * 5 + Math.max(0, 30 - (h.wait_time || 30));
                 const specs = (h.specialties || []).map(s => s.toLowerCase());
-                if ((cond.includes('heart') || cond.includes('cardiac')) && specs.includes('cardiac')) score += 25;
-                if ((cond.includes('trauma') || cond.includes('accident')) && specs.includes('trauma')) score += 25;
-                if ((cond.includes('child') || cond.includes('baby')) && specs.includes('pediatric')) score += 25;
-                if (score > bestScore) { bestScore = score; bestIdx = i; }
+                if ((cond.includes('heart') || cond.includes('cardiac')) && specs.includes('cardiac')) score += 30;
+                if ((cond.includes('trauma') || cond.includes('accident')) && specs.includes('trauma')) score += 30;
+                if (score > bestScore) { bestScore = score; best = h; }
             });
-
-            const h = hospitals[bestIdx] || hospitals[0];
-            return {
-                hospital_id: h.id,
-                hospital_name: h.name,
-                ward_type: wardType,
-                confidence: 0.82,
-                reason: `Selected based on ${wardType.toUpperCase()} ward availability and specialty alignment for "${patient.condition}". Wait time: ${h.wait_time} min. This hospital has the best current capacity for this severity level.`,
-                urgency_flag: sev === 'critical' || sev === 'high',
-                estimated_wait: `${h.wait_time || 30} min`,
-                alternatives: hospitals.filter((_, i) => i !== bestIdx).slice(0, 2).map(a => ({
-                    hospital_name: a.name,
-                    reason: `Alternative — ${a.wait_time}min wait`
-                })),
-                ai_engine: 'demo-fallback'
-            };
+            return { hospital_name: best.name, ward_type: ward, confidence: 0.78, reason: `Selected based on ${ward.toUpperCase()} ward availability and specialty alignment for "${p.condition}". Wait time: ${best.wait_time} min.`, urgency_flag: sev === 'critical' || sev === 'high', estimated_wait: `${best.wait_time || 30} min`, alternatives: hospitals.filter(h => h.id !== best.id).slice(0, 2).map(h => ({ hospital_name: h.name, reason: `Alt — ${h.wait_time}min wait` })), ai_engine: 'rule-based-fallback' };
         }
 
-        function renderAIResult(result) {
+        function showResult(r) {
             const el = document.getElementById('aiResult');
-            const conf = Math.round((result.confidence || 0.8) * 100);
-            const wardCfg = WARD_CONFIG[result.ward_type] || { color: '#00c8ff', label: result.ward_type };
-            const urgentHTML = result.urgency_flag
-                ? `<span class="urgency-flag">⚠ URGENT CASE</span>` : '';
-
-            const altsHTML = (result.alternatives || []).map(a =>
-                `<div style="font-size:12px;color:var(--text2);padding:6px 10px;background:rgba(255,255,255,0.02);border-radius:6px;margin-top:6px;">
-      <strong style="color:var(--text)">${a.hospital_name}</strong> — ${a.reason}
-    </div>`
-            ).join('');
+            const conf = Math.round((r.confidence || 0.8) * 100);
+            const wardColor = WARD_COLORS[r.ward_type] || '#1a6b3c';
+            const altsHTML = (r.alternatives || []).map(a => `<div class="alt-item"><span class="alt-name">${a.hospital_name}</span><span>${a.reason}</span></div>`).join('');
 
             el.innerHTML = `
-    <div class="ai-result-header">
+    <div class="result-header">
       <div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-          <span class="ai-badge">${result.ai_engine || 'gemini'}</span>
-          ${urgentHTML}
-        </div>
-        <div class="ai-hospital-name">${result.hospital_name}</div>
-        <div class="ai-ward" style="color:${wardCfg.color};">→ ${wardCfg.label} Ward</div>
+        <div class="result-hospital">${r.hospital_name}</div>
+        <div class="result-ward" style="color:${wardColor}">→ ${(r.ward_type || '').toUpperCase()} Ward</div>
+      </div>
+      <div class="result-badges">
+        <span class="badge badge-engine">${r.ai_engine || 'gemini'}</span>
+        ${r.urgency_flag ? '<span class="badge badge-urgent">Urgent</span>' : ''}
+        <span class="badge badge-conf">${conf}% confidence</span>
       </div>
     </div>
-    <div class="ai-reason">${result.reason}</div>
-    <div class="ai-meta">
-      <div class="ai-meta-item">
-        <span class="ai-meta-label">Ward Type</span>
-        <span class="ai-meta-val" style="color:${wardCfg.color}">${(result.ward_type || '').toUpperCase()}</span>
-      </div>
-      <div class="ai-meta-item">
-        <span class="ai-meta-label">Est. Wait</span>
-        <span class="ai-meta-val">${result.estimated_wait || 'N/A'}</span>
-      </div>
-      <div class="ai-meta-item">
-        <span class="ai-meta-label">Confidence</span>
-        <span class="ai-meta-val">${conf}%</span>
-      </div>
+    <div class="result-reason">${r.reason}</div>
+    <div class="result-meta">
+      <div class="meta-item"><div class="meta-label">Ward</div><div class="meta-val" style="color:${wardColor}">${(r.ward_type || '').toUpperCase()}</div></div>
+      <div class="meta-item"><div class="meta-label">Est. Wait</div><div class="meta-val">${r.estimated_wait || '—'}</div></div>
+      <div class="meta-item"><div class="meta-label">Confidence</div><div class="meta-val">${conf}%</div></div>
     </div>
-    <div class="confidence-bar">
-      <span style="font-size:11px;font-family:var(--mono);color:var(--text3);">AI Confidence</span>
-      <div class="conf-bg"><div class="conf-fill" style="width:${conf}%"></div></div>
-      <span style="font-size:11px;font-family:var(--mono);">${conf}%</span>
+    <div class="conf-bar-wrap" style="margin-bottom:${altsHTML ? '1rem' : '0'}">
+      <div class="conf-track"><div class="conf-fill" style="width:${conf}%"></div></div>
+      <span class="conf-pct">${conf}%</span>
     </div>
-    ${altsHTML.length ? `<div style="margin-top:1rem;"><div style="font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:4px;">Alternatives</div>${altsHTML}</div>` : ''}
-  `;
-            el.classList.add('visible');
+    ${altsHTML ? `<div class="alts-title">Alternatives</div>${altsHTML}` : ''}`;
+            el.classList.add('show');
             el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            toast(`Assigned → ${result.hospital_name}`, 'success');
+            toast(`Assigned → ${r.hospital_name}`, 'ok');
         }
 
-        // ── VIEW SWITCHING ─────────────────────────────────────────
-        function showView(name) {
-            ['hospitals', 'assign', 'about'].forEach(v => {
-                document.getElementById(`view-${v}`).style.display = v === name ? 'block' : 'none';
-                document.getElementById(`tab-${v}`).classList.toggle('active', v === name);
+        function showView(v) {
+            ['hospitals', 'assign', 'stack'].forEach(n => {
+                document.getElementById('view-' + n).style.display = n === v ? 'block' : 'none';
+                document.getElementById('tab-' + n).classList.toggle('active', n === v);
+            });
+            document.querySelectorAll('nav button').forEach((b, i) => {
+                b.classList.toggle('active', ['hospitals', 'assign', 'stack'][i] === v);
             });
         }
 
-        function switchTab(name) {
-            showView(name);
-        }
-
-        // ── TOAST ──────────────────────────────────────────────────
         function toast(msg, type = 'info') {
-            const container = document.getElementById('toastContainer');
+            const c = document.getElementById('toasts');
             const t = document.createElement('div');
             t.className = `toast ${type}`;
-            t.innerHTML = `<span>${type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ'}</span>${msg}`;
-            container.appendChild(t);
-            setTimeout(() => t.remove(), 3500);
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
         }
     </script>
 </body>
