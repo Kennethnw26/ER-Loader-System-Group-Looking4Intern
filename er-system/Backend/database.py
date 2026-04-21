@@ -77,28 +77,23 @@ async def update_hospital_beds(hospital_id: str, ward_type: str, action: str = "
             doc = ref.get()
             if not doc.exists:
                 return None
-            
             data = doc.to_dict()
             wards = data.get("wards", {})
             ward = wards.get(ward_type, {})
-            
             available = ward.get("available", 0)
             total = ward.get("total", 0)
-            
             if action == "admit":
                 if available <= 0:
-                    return None  # No beds available
+                    return None
                 ward["available"] = available - 1
             elif action == "discharge":
                 if available < total:
                     ward["available"] = available + 1
-            
             wards[ward_type] = ward
             ref.update({"wards": wards})
-            
-            updated_data = ref.get().to_dict()
-            updated_data["id"] = hospital_id
-            return updated_data
+            data["wards"] = wards
+            data["id"] = hospital_id
+            return data
         
         return await loop.run_in_executor(None, _update)
     except Exception as e:
