@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional
 import logging
@@ -104,3 +105,7 @@ async def discharge_patient(hospital_id: str, ward_type: str):
         return {"status": "success", "message": "Patient discharged", "updated": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/app")
+async def serve_frontend():
+    return FileResponse("Frontend/index.html")
