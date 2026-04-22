@@ -4,6 +4,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional
 import logging
+from dotenv import load_dotenv
+load_dotenv()
 
 from .database import get_hospitals, get_hospital_by_id, update_hospital_beds
 from .ai import assign_patient_to_hospital

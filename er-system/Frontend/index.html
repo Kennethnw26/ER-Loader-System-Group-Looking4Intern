@@ -1225,7 +1225,7 @@
             <div class="assign-section">
                 <div class="assign-top">
                     <div class="assign-title">Patient Assignment</div>
-                    <span class="model-tag">gemini-1.5-flash</span>
+                    <span class="model-tag" id="modelTag">gemini-2.0-flash-lite</span>
                 </div>
                 <div class="assign-body">
                     <div class="api-url-row">
@@ -1512,6 +1512,8 @@
 
         function showResult(r) {
             const el = document.getElementById('aiResult');
+            const modelTag = document.getElementById('modelTag');
+            if (modelTag) modelTag.textContent = r.ai_engine || 'gemini-2.0-flash';
             const conf = Math.round((r.confidence || 0.8) * 100);
             const wardColor = WARD_COLORS[r.ward_type] || '#1a6b3c';
             const altsHTML = (r.alternatives || []).map(a => `<div class="alt-item"><span class="alt-name">${a.hospital_name}</span><span>${a.reason}</span></div>`).join('');
