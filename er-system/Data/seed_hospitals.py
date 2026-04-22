@@ -88,20 +88,21 @@ HOSPITALS = [
 def seed():
     print(f"Connecting to Firestore project: {PROJECT_ID}")
     db = firestore.Client(project=PROJECT_ID, database="er-database")
-    
+
     collection = db.collection("hospitals")
-    
+
     # Clear existing
     existing = collection.stream()
     for doc in existing:
         doc.reference.delete()
         print(f"Deleted existing: {doc.id}")
-    
+
     # Insert new
     for hospital in HOSPITALS:
-        ref = collection.add(hospital)
-        print(f"✅ Added: {hospital['name']} (ID: {ref[1].id})")
-    
+        # FIX: Explicitly unpack tuple instead of using ref[1].id
+        _timestamp, doc_ref = collection.add(hospital)
+        print(f"✅ Added: {hospital['name']} (ID: {doc_ref.id})")
+
     print(f"\n✅ Seeded {len(HOSPITALS)} hospitals successfully!")
 
 if __name__ == "__main__":

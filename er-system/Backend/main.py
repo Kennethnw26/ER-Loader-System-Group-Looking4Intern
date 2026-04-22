@@ -39,13 +39,18 @@ class AdmitPatientRequest(BaseModel):
     condition: str
     severity: str
 
+# FIX 1: Give /discharge a proper request body instead of bare query params
+class DischargePatientRequest(BaseModel):
+    hospital_id: str
+    ward_type: str  # icu, premium, regular, general
+
 @app.get("/")
 async def root():
     return {
         "status": "online",
         "service": "ER Load Balancer",
         "version": "1.0.0",
-        "endpoints": ["/hospitals", "/assign", "/hospitals/{id}", "/admit"]
+        "endpoints": ["/hospitals", "/assign", "/hospitals/{id}", "/admit", "/discharge"]
     }
 
 @app.get("/hospitals")
@@ -76,8 +81,9 @@ async def assign_patient(patient: PatientRequest):
         hospitals = await get_hospitals()
         if not hospitals:
             raise HTTPException(status_code=503, detail="No hospitals available")
-        
-        result = await assign_patient_to_hospital(patient.dict(), hospitals)
+
+        # FIX 2: Use model_dump() instead of deprecated dict()
+        result = await assign_patient_to_hospital(patient.model_dump(), hospitals)
         return {"status": "success", "assignment": result}
     except HTTPException:
         raise
@@ -99,11 +105,17 @@ async def admit_patient(req: AdmitPatientRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/discharge")
-async def discharge_patient(hospital_id: str, ward_type: str):
+async def discharge_patient(req: DischargePatientRequest):  # FIX 1: proper request body
     try:
-        result = await update_hospital_beds(hospital_id, ward_type, action="discharge")
+        result = await update_hospital_beds(req.hospital_id, req.ward_type, action="discharge")
+        # FIX 3: Check result like /admit does
+        if not result:
+            raise HTTPException(status_code=400, detail="Could not discharge — ward may already be at full capacity")
         return {"status": "success", "message": "Patient discharged", "updated": result}
+    except HTTPException:
+        raise
     except Exception as e:
+        logger.error(f"Error discharging patient: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/app")

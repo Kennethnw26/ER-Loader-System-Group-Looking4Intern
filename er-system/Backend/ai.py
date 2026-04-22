@@ -22,8 +22,8 @@ async def _gemini_assign(patient: dict, hospitals: list) -> dict:
     from vertexai.generative_models import GenerativeModel
     import asyncio
 
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "your-project-id")
-    location = os.environ.get("VERTEX_AI_LOCATION", "us-central1")
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "hakcaton-group-looking4intern")
+    location = os.environ.get("VERTEX_AI_LOCATION", "asia-southeast1")
 
     # Build hospital summary for prompt
     hospital_summary = []
@@ -83,16 +83,33 @@ Respond ONLY with valid JSON in this exact format:
             generation_config={"temperature": 0.2, "max_output_tokens": 1024}
         )
         text = response.text.strip()
-        # Strip markdown code fences if present
+
+        # Strip markdown code fences if present (more robust handling)
         if text.startswith("```"):
-            text = text.split("```")[1]
+            parts = text.split("```")
+            # parts[1] contains the content between first and second ```
+            text = parts[1]
             if text.startswith("json"):
-                text = text[4:]
-        return json.loads(text.strip())
+                text = text[4:]  # Remove "json" language tag
+
+        text = text.strip()
+
+        # Validate it looks like JSON before parsing
+        if not text.startswith("{"):
+            raise ValueError(f"Gemini returned non-JSON response: {text[:100]}")
+
+        return json.loads(text)
 
     loop = __import__('asyncio').get_event_loop()
     result = await loop.run_in_executor(None, _call_gemini)
+
+    # Ensure ai_engine is always set
     result["ai_engine"] = "gemini-1.5-flash"
+
+    # Ensure confidence is a float between 0 and 1
+    if "confidence" in result:
+        result["confidence"] = max(0.0, min(1.0, float(result["confidence"])))
+
     return result
 
 
@@ -126,8 +143,8 @@ def _rule_based_assign(patient: dict, hospitals: list) -> dict:
         specialties = [s.lower() for s in h.get("specialties", [])]
         if any(kw in condition for kw in ["heart", "cardiac", "chest"]) and "cardiac" in specialties:
             score += 30
-        if any(kw in condition for kw in ["trauma", "accident", "injury"]) and "trauma" in specialties:
-            score += 30
+        if any(kw in condition for kw in ["trauma", "accident", "injury", "fracture"]) and "trauma" in specialties:
+            score += 30  # FIX: added "fracture" as a trauma keyword
         if any(kw in condition for kw in ["child", "pediatric", "baby"]) and "pediatric" in specialties:
             score += 30
 
@@ -141,7 +158,8 @@ def _rule_based_assign(patient: dict, hospitals: list) -> dict:
         scored.append((score, h))
 
     if not scored:
-        # All hospitals full, pick least bad
+        # All hospitals full, pick least bad option
+        logger.warning("All hospitals full, selecting least-bad option")
         scored = [(0, h) for h in hospitals]
 
     scored.sort(key=lambda x: x[0], reverse=True)

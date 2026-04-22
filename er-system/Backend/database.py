@@ -13,7 +13,8 @@ def get_db():
     if _db is None:
         try:
             from google.cloud import firestore
-            project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "your-project-id")
+            # FIX 1: Use actual project ID as fallback instead of placeholder
+            project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "hakcaton-group-looking4intern")
             _db = firestore.Client(project=project_id, database="er-database")
             logger.info(f"Firestore connected to project: {project_id}")
         except Exception as e:
@@ -25,8 +26,8 @@ async def get_hospitals():
     """Fetch all hospitals from Firestore"""
     try:
         db = get_db()
-        loop = asyncio.get_event_loop()
-        
+        loop = asyncio.get_running_loop()  # FIX 2: get_event_loop() deprecated in Python 3.10+
+
         def _fetch():
             hospitals = []
             docs = db.collection("hospitals").stream()
@@ -35,7 +36,7 @@ async def get_hospitals():
                 data["id"] = doc.id
                 hospitals.append(data)
             return hospitals
-        
+
         hospitals = await loop.run_in_executor(None, _fetch)
         logger.info(f"Fetched {len(hospitals)} hospitals")
         return hospitals
@@ -47,8 +48,8 @@ async def get_hospital_by_id(hospital_id: str):
     """Fetch a single hospital by ID"""
     try:
         db = get_db()
-        loop = asyncio.get_event_loop()
-        
+        loop = asyncio.get_running_loop()  # FIX 2
+
         def _fetch():
             doc = db.collection("hospitals").document(hospital_id).get()
             if doc.exists:
@@ -56,7 +57,7 @@ async def get_hospital_by_id(hospital_id: str):
                 data["id"] = doc.id
                 return data
             return None
-        
+
         return await loop.run_in_executor(None, _fetch)
     except Exception as e:
         logger.error(f"get_hospital_by_id error: {e}")
@@ -70,8 +71,8 @@ async def update_hospital_beds(hospital_id: str, ward_type: str, action: str = "
     """
     try:
         db = get_db()
-        loop = asyncio.get_event_loop()
-        
+        loop = asyncio.get_running_loop()  # FIX 2
+
         def _update():
             ref = db.collection("hospitals").document(hospital_id)
             doc = ref.get()
@@ -94,7 +95,7 @@ async def update_hospital_beds(hospital_id: str, ward_type: str, action: str = "
             data["wards"] = wards
             data["id"] = hospital_id
             return data
-        
+
         return await loop.run_in_executor(None, _update)
     except Exception as e:
         logger.error(f"update_hospital_beds error: {e}")
