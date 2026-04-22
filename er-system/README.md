@@ -2,6 +2,8 @@
 **Track 3: Vital Signs (Healthcare & Wellbeing)**
 MyAI Future Hackathon Team Looking4Intern
 
+Contributors: Edbert Felo Tjuganda, Richmond Deanlim, Willy Candra, Kenneth Nathaniel Wong
+
 ---
 
 ## 🌐 Live Application
@@ -201,4 +203,4 @@ Response:
 ## 👥 Team
 **Name:** Looking4Intern
 **Track:** Track 3 — Vital Signs (Healthcare & Wellbeing)
-**Event:** MyAI Future Hackathon 2024, Malaysia
+**Event:** MyAI Future Hackathon, Malaysia
