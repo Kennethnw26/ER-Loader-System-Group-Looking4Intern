@@ -26,7 +26,7 @@ As Malaysia transitions toward **"Aged Society"** status, the public healthcare 
 The **ER Load Balancer** is an AI-powered patient routing system that moves beyond simple chat to **autonomous action**. Given a patient's condition, severity, and location, the system:
 
 1. Fetches real-time hospital data from Firestore
-2. Sends patient + hospital data to **Gemini 1.5 Flash** via Vertex AI
+2. Sends patient + hospital data to **Gemini 2.0 Flash** via Google AI Studio
 3. Receives an AI-reasoned decision on the optimal hospital and ward
 4. Returns a structured assignment with confidence score, full reasoning, and alternatives
 
@@ -38,7 +38,7 @@ This demonstrates the complete **Chat → Action** pipeline required by the hack
 
 | Component | Technology | Role |
 |-----------|-----------|------|
-| 🧠 Intelligence | Gemini 1.5 Flash (Vertex AI) | Core AI decision engine |
+| 🧠 Intelligence | Gemini 2.0 Flash (Google AI Studio) | Core AI decision engine |
 | 🎯 Orchestrator | Vertex AI Agent Builder | Agentic workflow orchestration |
 | 🗄️ Database | Google Cloud Firestore | Real-time hospital and bed data |
 | 🚀 Deployment | Google Cloud Run | Serverless backend hosting |
@@ -65,8 +65,8 @@ Browser (Frontend — index.html)
             ↓
 FastAPI Backend (Google Cloud Run)
         ↓               ↓
-Firestore           Gemini 1.5 Flash
-(er-database)       (Vertex AI)
+Firestore           Gemini 2.0 Flash
+(er-database)       (Google AI Studio)
         ↓               ↓
   Real-time        AI Reasoning
   Bed Counts       + Decision
@@ -138,7 +138,16 @@ $env:GOOGLE_CLOUD_PROJECT = "hakcaton-group-looking4intern"
 python -m Data.seed_hospitals
 ```
 
-### 6. Run locally
+### 6. Set environment variables
+Create a `.env` file in the `er-system/` root:
+```
+GOOGLE_CLOUD_PROJECT=hakcaton-group-looking4intern
+GOOGLE_CLOUD_REGION=asia-southeast1
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+
+### 7. Run locally
 ```bash
 uvicorn Backend.main:app --reload --port 8000
 ```
@@ -182,7 +191,7 @@ Response:
     "reason": "HKL has cardiac specialty and 3 ICU beds available. Shortest wait time for critical cardiac cases.",
     "urgency_flag": true,
     "estimated_wait": "25 min",
-    "ai_engine": "gemini-1.5-flash"
+    "ai_engine": "gemini-2.0-flash"
   }
 }
 ```
